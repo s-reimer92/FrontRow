@@ -7,7 +7,7 @@ var getArtistID = (artist, callback) => {
 		json: true,
 		headers: { "x-api-key": "5bd75213-9c63-4629-bcd0-5750e7558af5"}
 	}, (error, response, body) => {	
-		if (body.artist == undefined) {
+		if (body == undefined) {
 			callback("Artist is not featured in setlist.fm")
 		} else {
 		callback(body.artist[0].mbid)
@@ -41,7 +41,7 @@ var parseSetlist = (setlist) => {
 }		
 //Takes an array of songs and returns the 10 most played
 var analyzeSetlist = () => {
-	//Counts is a dictionary that contains each song and the number of times it occurs in songArray
+	//Counts is a dictionary object that contains each song and the number of times it occurs in songArray
 	var counts = {};
 	songArray.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
 
@@ -66,7 +66,7 @@ module.exports = {
 /* TEST FUNCTION
 songArray = []
 
-getArtistID("Belle & Sebastian", (results) => {
+getArtistID("Black Keys", (results) => {
 	getSetlist(results, (output) => {
 		for (var i=0; i<output.length; i++) {
 			parseSetlist(output[i].sets.set)
