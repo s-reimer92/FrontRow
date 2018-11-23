@@ -53,6 +53,10 @@ var analyzeSetlist = () => {
   		return second[1] - first[1];
 	});
 	return topSongs.slice(0, 10);
+
+	//To find percentage of the time that the band plays the song (Just in case a band has less than 10 entries)
+
+	
 }
 
 
@@ -63,10 +67,10 @@ module.exports = {
 	analyzeSetlist
 }
 
-/* TEST FUNCTION
+// TEST FUNCTION
 songArray = []
 
-getArtistID("Black Keys", (results) => {
+getArtistID("Half Moon Run", (results) => {
 	getSetlist(results, (output) => {
 		for (var i=0; i<output.length; i++) {
 			parseSetlist(output[i].sets.set)
@@ -75,4 +79,3 @@ getArtistID("Black Keys", (results) => {
 		console.log(finalResults);	
 	})
 })
-*/
