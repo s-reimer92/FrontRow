@@ -7,15 +7,11 @@ var getArtists = (artist, callback) => {
 		url: "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=" + encodeURIComponent(artist) + "&api_key=e006c67d7936e45b2cfa8fed71da22a6&format=json",
 		json: true,
 	}, (error, response, body) => {
-		if (body.results.artistmastches == undefined) {
-			callback("No Results")
-		} else {
-			var searchresults = []
-			for (var i=0; i<10; i++){
-				searchresults.push(JSON.stringify(body.results.artistmatches.artist[i].name, undefined, 2))	
-			}
-			callback(searchresults)
-		}
+		var searchresults = []
+		for (var i=0; i<10; i++){
+			searchresults.push(JSON.stringify(body.results.artistmatches.artist[i].name, undefined, 2))				}
+		callback(searchresults)
+		
 	});
 };
 
@@ -24,8 +20,8 @@ module.exports = {
 	getArtists
 }
 
-/* TEST FUNCTION
+// TEST FUNCTION
 getArtists('black', (results) => {
 	console.log(results);
 });
-*/
+

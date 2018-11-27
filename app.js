@@ -16,19 +16,19 @@ var currentSearch
 
 app.get('/', (request, response) => {	
 	response.render('home.hbs', {
-		title: 'Front Row'
+		title: 'FrontRow'
 	})
 })
 
 app.get('/login', (request, response) => {
 	response.render('login.hbs', {
-		title: 'Log In',
+		title: 'FrontRow - Log In',
 	})
 })
 
 app.get('/signup', (request, response) => {
 	response.render('signup.hbs', {
-		title: 'Sign Up',
+		title: 'FrontRow - Sign Up',
 	})
 })
 

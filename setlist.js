@@ -70,7 +70,7 @@ module.exports = {
 // TEST FUNCTION
 songArray = []
 
-getArtistID("Half Moon Run", (results) => {
+getArtistID("Belle & Sebastian", (results) => {
 	getSetlist(results, (output) => {
 		for (var i=0; i<output.length; i++) {
 			parseSetlist(output[i].sets.set)
