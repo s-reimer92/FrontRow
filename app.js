@@ -80,6 +80,13 @@ app.get('/logout', (req, res) => {
 });
 
 
+app.get('/searchResults', (request, response) => {
+	response.render('searchResults.hbs', {
+		title: 'searchResults',
+		//search: lastfm.getArtists()
+	});
+});
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
