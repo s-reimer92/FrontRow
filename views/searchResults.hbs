@@ -8,8 +8,15 @@
 		{{> banner}}
 		{{> menu}}
 		{{> searchResultsStyle}}
-		<div id = "searchResultsBox"></div>
+		<div id = "searchResultsBox">
+			<div id = "searchResultsFrame">
+				{{#each artistResults}}
+					<p>{{this}}</p>
+				{{/each}}										
+			</div>
+			<div id = "searchResultsText">These are the search results for {{artist}}</div>
+		</div>
+	</div>
 </body>
-
 
 </html>
