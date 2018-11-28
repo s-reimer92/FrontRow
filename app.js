@@ -83,6 +83,7 @@ app.post('/searchResults', (request, response) => {
 			artistResults: result
 		});
 	})
+})
 
 app.get('/logout', (req, res) => {
     req.session.reset();
