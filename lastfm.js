@@ -20,8 +20,8 @@ module.exports = {
 	getArtists
 }
 
-// TEST FUNCTION
+/* TEST FUNCTION
 getArtists('black', (results) => {
 	console.log(results);
 });
-
+*/

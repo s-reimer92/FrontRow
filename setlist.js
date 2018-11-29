@@ -67,7 +67,7 @@ module.exports = {
 	analyzeSetlist
 }
 
-// TEST FUNCTION
+/* TEST FUNCTION
 songArray = []
 
 getArtistID("Belle & Sebastian", (results) => {
@@ -79,3 +79,4 @@ getArtistID("Belle & Sebastian", (results) => {
 		console.log(finalResults);	
 	})
 })
+*/
