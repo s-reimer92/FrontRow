@@ -22,45 +22,51 @@ const getNumPages = (cityID, callback) => {
 	});
 };
 
+//Parses through results to find any bands we like
+var parseResults = (cityID, numPages, favList, resultsList, callback) => {
+	//currentRequests tracks the number of async requests currently being processed
+	var currentRequests = numPages;
 
+	//Iterates over every page of results from API
+	for (let i=1; i<numPages+1; i++) {
+		request({
+			url: "https://api.songkick.com/api/3.0/metro_areas/" + encodeURIComponent(cityID) + "/calendar.json?apikey=7XGKU5ekAA1FiTOX&page=" + encodeURIComponent(i),
+			json: true
+		}, (error, response, body) => {
 
+			//Iterates over each show on page
+			for (let j=0;j<body.resultsPage.results.event.length; j++) {
 
-//Parses over each concert in the page 
-var parsePage = (cityID, pageNum, favList, resultsList) => {
-	return new Promise(resolve => {
-			request({
-				url: "https://api.songkick.com/api/3.0/metro_areas/" + encodeURIComponent(cityID) + "/calendar.json?apikey=7XGKU5ekAA1FiTOX&page=" + encodeURIComponent(pageNum),
-				json: true
-			}, (error, response, body) => {
-				//parse over each concert
-				for (i=0;i<body.resultsPage.results.event.length; i++) {
-					//parse over each band
-					for (j=0; j<body.resultsPage.results.event[i].performance.length; j++) {
-						//adds band to list if in favourites
-						console.log(body.resultsPage.results.event[i].performance[j].displayName);
-						if (favList.includes(body.resultsPage.results.event[i].performance[j].displayName)) {
-							resultsList.push(body.resultsPage.results.event[i].performance)
-						}
+				//Iterates over each band in show
+				for (let k=0; k<body.resultsPage.results.event[j].performance.length; k++) {
+
+					//checks if band is favourited
+					if (favList.includes(body.resultsPage.results.event[j].performance[k].displayName)) {
+						resultsList.push(body.resultsPage.results.event[j])
 					}
 				}
-				
-			})
-		
-	})
-}
+			}
+			currentRequests--
 
-var parseResults = async (cityID, numPages, favList, resultsList) => {
-	for (i=0; i<numPages; i++) {
-		await parsePage(cityID, i+1, favList, resultsList)
+			//Finishes after all async requests are completed
+			if (currentRequests == 0) {
+				console.log(resultsList);
+				callback(resultsList)
+
+			}
+		})	
+
 	}
-	return resultsList
 }
 
-var favouriteList = ["Jann Arden", "Metallica", "Ella Mai", "Musica Intima"]
-var list = []
+/* Test Function
+var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
+list =[]
 
-parseResults(27398, 10, favouriteList, list).then((results) => {
-	console.log(list);
-}).catch((e) => {
-	console.log(e);
+
+parseResults(27398, 10, favouriteList, list, (results) => {
+	console.log(results);
 })
+*/
+
+
