@@ -9,7 +9,8 @@ var getArtists = (artist, callback) => {
 	}, (error, response, body) => {
 		var searchresults = []
 		for (var i=0; i<10; i++){
-			searchresults.push(JSON.stringify(body.results.artistmatches.artist[i].name, undefined, 2))				}
+			searchresults.push(body.results.artistmatches.artist[i].name)
+		}
 		callback(searchresults)
 		
 	});
@@ -20,8 +21,16 @@ module.exports = {
 	getArtists
 }
 
+<<<<<<< HEAD
 /* TEST FUNCTION
 getArtists('black', (results) => {
 	console.log(results);
 });
 */
+=======
+// TEST FUNCTION
+// getArtists('black', (results) => {
+// 	console.log(results);
+// });
+
+>>>>>>> upstream/master

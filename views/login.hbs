@@ -7,10 +7,17 @@
 	<div id = "body">
 		<div id = "loginLogo"></div>
 		<div id = "loginBox">
-			<input type="text", id = "loginEntry", value="Username", onfocus="this.value='", class="loginField" />
-			<input type="text", id = "passwordEntry", value="Password", onfocus="this.value='", class="loginField" />
-			<button type="button", id = "loginButton", class="loginField">Log In</button>
-			<button type="submit", id = "signupButton", class="loginField">Not a User?  Sign Up!</button>
+
+			<form id='loginForm' action="/login" method="POST">
+				<input type="text", id = "loginEntry", placeholder="Username", onfocus="this.value='", class="loginField", name="username" />
+				<input type="password", id = "passwordEntry", placeholder="Password", onfocus="this.value='", class="loginField", name="password" />
+				{{error}}
+				<input type="submit", id = "loginButton", class="loginField", value="Log in" />
+			</form>
+
+			<form id='loginForm' action="/signup" method="post">
+				<input type="submit", id = "signupButton", class="loginField" value="Not a User?  Sign Up!" />
+			</form>
 		</div>
 	</div>
 </body>
