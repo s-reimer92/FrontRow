@@ -139,13 +139,17 @@ app.post('/searchResults', (request, response) => {
 })
 
 app.get('/upcoming', (request, response) => {
-	songkick.returnConcerts(favouriteList, location, (concerts) => {
-		response.render('upcoming.hbs', {
-			title: "FrontRow - Upcoming",
-			concertResults: concerts,
-            login: userLogin
-		})
-	})
+    if (userLogin == false) {
+        response.redirect('/')
+    } else {
+    	songkick.returnConcerts(request.session.user.artists, request.session.user.location, (concerts) => {
+    		response.render('upcoming.hbs', {
+    			title: "FrontRow - Upcoming",
+    			concertResults: concerts,
+                login: userLogin
+    		})
+    	})
+    }
 })
 
 app.post('/upcoming', (request, response) => {
