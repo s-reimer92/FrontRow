@@ -59,24 +59,24 @@ var analyzeSetlist = () => {
 	
 }
 
-
-module.exports = {
-	getArtistID,
-	getSetlist,
-	parseSetlist,
-	analyzeSetlist
+var returnSetlist = (artist) => {
+	songArray = []
+	getArtistID(artist, (artistID) => {
+		getSetlist(artistID, (output) => {
+			for (var i=0; i<output.length; i++) {
+				parseSetlist(output[i].sets.set)
+			}
+			var finalResults = analyzeSetlist();
+			return finalResults;	
+		})
+	})
 }
 
-/* TEST FUNCTION
-songArray = []
+module.exports = {
+	returnSetlist
 
-getArtistID("Belle & Sebastian", (results) => {
-	getSetlist(results, (output) => {
-		for (var i=0; i<output.length; i++) {
-			parseSetlist(output[i].sets.set)
-		}
-		var finalResults = analyzeSetlist();
-		console.log(finalResults);	
-	})
-})
-*/
+}
+
+
+
+
