@@ -10,13 +10,12 @@
 		{{> searchResultsStyle}}
 		<div id = "searchResultsBox">
 			<div id = "searchResultsFrame">
-				{{#each artistResults}}
+				{{#each artists}}
 					<p>{{this}}</p>
-					<button type="button">Add to Favourites</button>
 					<hr>
 				{{/each}}										
 			</div>
-			<div id = "searchResultsText">Search Results: {{artist}}</div>
+			<div id = "searchResultsText">Favourites{{artist}}</div>
 		</div>
 	</div>
 </body>

@@ -1,9 +1,9 @@
 {{#if login}}
-<div id = "logoutButton" class = "menuButton">
-	<a href='/logout'>Sign out</a>
-</div id>
+<a href='/logout'>
+	<div id = "logoutButton" class = "menuButton">Sign out</div id>
+</a>
 {{else}}
-<div id = "loginButton" class = "menuButton">
-	<a href="/login">Log in</a>
-</div id>
+<a href="/login">
+	<div id = "loginButton" class = "menuButton">Log in</div id>
+</a>
 {{/if}}

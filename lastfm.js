@@ -21,8 +21,16 @@ module.exports = {
 	getArtists
 }
 
+
+/* TEST FUNCTION
+getArtists('black', (results) => {
+	console.log(results);
+});
+*/
+
 // TEST FUNCTION
 // getArtists('black', (results) => {
 // 	console.log(results);
 // });
+
 

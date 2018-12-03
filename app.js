@@ -4,11 +4,17 @@ const fs = require('fs');
 const lastfm = require('./lastfm.js');
 const session = require('client-sessions');
 const bodyParser = require('body-parser');
+const setlist = require('./setlist.js');
+const songkick = require('./songkick.js');
 
 var user = require('./user.js');
 // var connect = require('./connect.js');
 
 var app = express();
+
+//User Info
+var location = '';
+var favouriteList = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -103,15 +109,36 @@ app.post('/signup', (req, res) => {
             res.redirect('/');
         }
     })
+
+
+app.get('/favourites', (request, response) => {
+	response.render('favourites.hbs', {
+		title: 'FrontRow - Favourite Artists',
+		artists: favouriteList
+	})
 })
 
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
 		response.render('searchResults.hbs', {
+			title: "FrontRow - Search Results",
 			artist: request.body.artist,
 			artistResults: result
 		});
 	})
+})
+
+app.get('/upcoming', (request, response) => {
+	songkick.returnConcerts(favouriteList, location, (concerts) => {
+		response.render('upcoming.hbs', {
+			title: "FrontRow - Upcoming",
+			concertResults: concerts
+		})
+	})
+})
+
+app.post('/upcoming', (request, response) => {
+
 })
 
 app.get('/logout', (req, res) => {
@@ -125,3 +152,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
 	console.log(`Server is up on the port ${8080}`);
 });
+

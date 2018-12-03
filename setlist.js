@@ -10,7 +10,7 @@ var getArtistID = (artist, callback) => {
 		if (body == undefined) {
 			callback("Artist is not featured in setlist.fm")
 		} else {
-		callback(body.artist[0].mbid)
+			callback(body.artist[0].mbid)
 		}
 	});	
 }
@@ -25,12 +25,12 @@ var getSetlist = (artistID, callback) => {
 		if (body.setlist == undefined) {
 			callback("No setlists have been recorded")
 		} else {
-		callback(body.setlist)
+			callback(body.setlist)
 		}
 	})
 }
 //Takes a setlist as a parameter and adds all songs into an array
-var parseSetlist = (setlist) => {
+var parseSetlist = (setlist, songArray) => {
 	//Parses through each performance, as setlist.fm stores encores and multiple set performances seperately
 	for (var i=0; i<setlist.length; i++) {
 		//Parses through each song in the performance and adds to an array
@@ -40,7 +40,7 @@ var parseSetlist = (setlist) => {
 	}	
 }		
 //Takes an array of songs and returns the 10 most played
-var analyzeSetlist = () => {
+var analyzeSetlist = (songArray) => {
 	//Counts is a dictionary object that contains each song and the number of times it occurs in songArray
 	var counts = {};
 	songArray.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
@@ -53,29 +53,46 @@ var analyzeSetlist = () => {
   		return second[1] - first[1];
 	});
 	return topSongs.slice(0, 10);
-
-	//To find percentage of the time that the band plays the song (Just in case a band has less than 10 entries)
-
-	
 }
 
+var returnSetlist = (artist, callback) => {
+	songs = []
+	getArtistID(artist, (artistID) => {
+		getSetlist(artistID, (output) => {
+
+			for (var i=0; i<output.length; i++) {
+				if (output == "No setlists have been recorded") {
+					callback("No setlists have been recorded")
+					return
+				}
+				parseSetlist(output[i].sets.set, songs)
+			}
+			var finalResults = analyzeSetlist(songs);
+			callback(finalResults);	
+		})
+	})
+}
+
+var returnAllSetlists = (artistArray, callback) => {
+	setlistList =[]
+	let uniqueArr = Array.from(new Set(artistArray))
+    for(let i=0; i<uniqueArr.length; i++) {
+    	returnSetlist(uniqueArr[i], (results) => {
+    		setlistList.push(results)
+    	})
+    }
+    callback(setlistList)
+}
 
 module.exports = {
-	getArtistID,
-	getSetlist,
-	parseSetlist,
-	analyzeSetlist
+	returnSetlist
+
 }
+//Test Function
 
-// TEST FUNCTION
-songArray = []
+var list = ["Elton John", "Metallica", "Bon Iver"]
 
-getArtistID("Belle & Sebastian", (results) => {
-	getSetlist(results, (output) => {
-		for (var i=0; i<output.length; i++) {
-			parseSetlist(output[i].sets.set)
-		}
-		var finalResults = analyzeSetlist();
-		console.log(finalResults);	
-	})
+returnAllSetlists(list, (results) => {
+	console.log(results);
 })
+
