@@ -81,6 +81,12 @@ app.get('/signup', (request, response) => {
 	})
 })
 
+app.get('/favourites', (request, response) => {
+	response.render('favourites.hbs', {
+		artists: favouriteList
+	})
+})
+
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
 		response.render('searchResults.hbs', {
