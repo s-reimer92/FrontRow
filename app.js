@@ -109,6 +109,7 @@ app.post('/signup', (req, res) => {
             res.redirect('/');
         }
     })
+});
 
 
 app.get('/favourites', (request, response) => {
