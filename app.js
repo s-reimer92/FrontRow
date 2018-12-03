@@ -1,37 +1,34 @@
+// All required node modules
 const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
-const lastfm = require('./lastfm.js');
 const session = require('client-sessions');
 const bodyParser = require('body-parser');
+
+// Functions created by ourselves
 const setlist = require('./setlist.js');
 const songkick = require('./songkick.js');
+const lastfm = require('./lastfm.js');
+const user = require('./user.js');
 
-var user = require('./user.js');
-// var connect = require('./connect.js');
-
+// Set up an Express app
 var app = express();
 
-//User Info
-var location = '';
-var favouriteList = [];
-
+// Set up the bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
+// Set up hbs directory
 hbs.registerPartials(__dirname + '/views/partials');
-
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
-// Holds value for search bar
-var currentSearch 
-
+// Keep track of user login status
 var userLogin = false
 
-// creates a session
+// Creates a session for user
 app.use(session({
     cookieName: 'session',
     secret: 'secret',
@@ -39,7 +36,7 @@ app.use(session({
     activeDuration: 1 * 30 * 60 * 1000
 }));
 
-// Homepage - sent to login page if not login
+// Homepage, redirect to login page if not login
 app.get('/', (request, response) => {
     if (userLogin == false) {
         response.render('login.hbs', {
@@ -64,21 +61,21 @@ app.get('/login', (request, response) => {
 })
 
 
-// Login method
-app.post('/login', (req, res) => {
-    user.login(req.body.username, (user) => {
-    	if (user === 'failed') {
-    		res.render('login.hbs', {
+// POST method for login
+app.post('/login', (request, response) => {
+    user.login(request.body.username, request.body.password, (user) => {
+    	if (user === 'failed username') {
+    		response.render('login.hbs', {
     			error: 'Invalid username'
     		});
-    	} else if (user.password === req.body.password) {
-    		req.session.user = user
-            userLogin = true
-    		res.redirect('/');
+    	} else if (user === "failed password") {
+    		response.render('login.hbs', {
+                error: 'Wrong password'
+            });
     	} else {
-    		res.render('login.hbs', {
-    			error: 'Wrong password'
-    		});
+            request.session.user = user
+            userLogin = true
+            response.redirect('/');
     	}
     });
 });
@@ -91,31 +88,31 @@ app.get('/signup', (request, response) => {
 	})
 })
 
-//Sign up method
-app.post('/signup', (req, res) => {
-    user.signup(req.body.username, req.body.password, req.body.comPassword, req.body.location, (user) => {
+// POST method for signup
+app.post('/signup', (request, response) => {
+    user.signup(request.body.username, request.body.password, request.body.comPassword, request.body.location, (user) => {
         if (user === 'failed username') {
-            res.render('signup.hbs', {
+            response.render('signup.hbs', {
                 title: 'FrontRow - Sign Up',
                 error: 'User already exist'
             });
         } else if (user === 'failed password') {
-            res.render('signup.hbs', {
+            response.render('signup.hbs', {
                 title: 'FrontRow - Sign Up',
                 error: "Passwords don't match"
             });
         } else if (user === 'empty') {
-            res.render('signup.hbs', {
+            response.render('signup.hbs', {
                 title: 'FrontRow - Sign Up',
                 error: "All fields cannot be empty"
             });
         } else {
-            res.redirect('/');
+            response.redirect('/');
         }
     })
 });
 
-
+// Favourites page, redirect to login page if not login
 app.get('/favourites', (request, response) => {
     if (userLogin == false) {
         response.redirect('/')
@@ -128,6 +125,7 @@ app.get('/favourites', (request, response) => {
     }
 })
 
+// POST method for searching artists
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
 		response.render('searchResults.hbs', {
@@ -139,6 +137,7 @@ app.post('/searchResults', (request, response) => {
 	})
 })
 
+// upcoming show page, redirect to login page if not login
 app.get('/upcoming', (request, response) => {
     if (userLogin == false) {
         response.redirect('/')
@@ -157,11 +156,13 @@ app.post('/upcoming', (request, response) => {
 
 })
 
-app.get('/logout', (req, res) => {
-    req.session.reset();
+// GET method for log out, end current session and redirect to homepage
+app.get('/logout', (request, response) => {
+    request.session.reset();
     userLogin = false;
-    res.redirect('/');
+    response.redirect('/');
 });
+
 
 const port = process.env.PORT || 8080;
 
