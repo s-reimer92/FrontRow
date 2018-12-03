@@ -50,7 +50,18 @@ var parseResults = (cityID, numPages, favList, callback) => {
 
 			//Finishes after all async requests are completed
 			if (currentRequests == 0) {
-				console.log(resultsList);
+				//Sorts by date
+				resultsList.sort(function(a,b) {
+					if(a.start.date == b.start.date) {
+        				return 0;
+					} if(a.start.date < b.start.date) {
+						return -1;
+					} if(a.start.date > b.start.date) {
+						return 1;
+					}
+        
+				})
+
 				callback(resultsList)
 
 			}
@@ -65,7 +76,7 @@ module.exports = {
 	parseResults
 }
 // Test Function 
-/*
+
 var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
 getLocation('burnaby', (results) => {
 	getNumPages(results, (results2) => {
@@ -75,5 +86,5 @@ getLocation('burnaby', (results) => {
 	})
 })
 
-*/
+
 
