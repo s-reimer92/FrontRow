@@ -44,6 +44,7 @@ app.get('/', (request, response) => {
     if (userLogin == false) {
         response.render('login.hbs', {
             title: 'FrontRow - Log In',
+            login: userLogin
         });
     } else {
         response.render('home.hbs', {
@@ -57,6 +58,7 @@ app.get('/', (request, response) => {
 app.get('/login', (request, response) => {
 	response.render('login.hbs', {
 		title: 'FrontRow - Log In',
+        login: userLogin
 	})
 })
 
@@ -84,6 +86,7 @@ app.post('/login', (req, res) => {
 app.get('/signup', (request, response) => {
 	response.render('signup.hbs', {
 		title: 'FrontRow - Sign Up',
+        login: userLogin
 	})
 })
 
@@ -115,7 +118,8 @@ app.post('/signup', (req, res) => {
 app.get('/favourites', (request, response) => {
 	response.render('favourites.hbs', {
 		title: 'FrontRow - Favourite Artists',
-		artists: favouriteList
+		artists: favouriteList,
+        login: userLogin
 	})
 })
 
@@ -124,7 +128,8 @@ app.post('/searchResults', (request, response) => {
 		response.render('searchResults.hbs', {
 			title: "FrontRow - Search Results",
 			artist: request.body.artist,
-			artistResults: result
+			artistResults: result,
+            login: userLogin
 		});
 	})
 })
@@ -133,7 +138,8 @@ app.get('/upcoming', (request, response) => {
 	songkick.returnConcerts(favouriteList, location, (concerts) => {
 		response.render('upcoming.hbs', {
 			title: "FrontRow - Upcoming",
-			concertResults: concerts
+			concertResults: concerts,
+            login: userLogin
 		})
 	})
 })
