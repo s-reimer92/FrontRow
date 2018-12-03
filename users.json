@@ -1,8 +1,13 @@
 [
-    {
-        "username": "shaun",
-        "password": "student",
-        "location": "Burnaby",
-        "artists": []
-    }
-]
+{
+    "username": "shaun",
+    "password": "student",
+    "location": "Burnaby",
+    "artists": []
+},
+{
+    "username": "aaa",
+    "password": "aaa",
+    "location": "aaa",
+    "artists": []
+}]

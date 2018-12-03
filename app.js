@@ -17,16 +17,13 @@ app.use(bodyParser.urlencoded({
 
 hbs.registerPartials(__dirname + '/views/partials');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
-
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
-//Holds value for search bar
+// Holds value for search bar
 var currentSearch 
+
+var userLogin = false
 
 // creates a session
 app.use(session({
@@ -36,21 +33,30 @@ app.use(session({
     activeDuration: 1 * 30 * 60 * 1000
 }));
 
-// Homepage
-app.get('/', (request, response) => {	
-	response.render('home.hbs', {
-		title: 'FrontRow',
-		login: false
-	})
+// Homepage - sent to login page if not login
+app.get('/', (request, response) => {
+    if (userLogin == false) {
+        response.render('login.hbs', {
+            title: 'FrontRow - Log In',
+        });
+    } else {
+        response.render('home.hbs', {
+            title: 'FrontRow',
+            login: userLogin
+        });
+    }
 })
 
+// Login page
 app.get('/login', (request, response) => {
 	response.render('login.hbs', {
 		title: 'FrontRow - Log In',
 	})
 })
 
-app.post('/login', function(req, res) {
+
+// Login method
+app.post('/login', (req, res) => {
     user.login(req.body.username, (user) => {
     	if (user === 'failed') {
     		res.render('login.hbs', {
@@ -58,10 +64,8 @@ app.post('/login', function(req, res) {
     		});
     	} else if (user.password === req.body.password) {
     		req.session.user = user
-    		res.render('home.hbs', {
-    			title: `FrontRow - ${user.username}`,
-				login: true
-    		});
+            userLogin = true
+    		res.redirect('/');
     	} else {
     		res.render('login.hbs', {
     			error: 'Wrong password'
@@ -70,10 +74,35 @@ app.post('/login', function(req, res) {
     });
 });
 
+// Sign up page
 app.get('/signup', (request, response) => {
 	response.render('signup.hbs', {
 		title: 'FrontRow - Sign Up',
 	})
+})
+
+//Sign up method
+app.post('/signup', (req, res) => {
+    user.signup(req.body.username, req.body.password, req.body.comPassword, req.body.location, (user) => {
+        if (user === 'failed username') {
+            res.render('signup.hbs', {
+                title: 'FrontRow - Sign Up',
+                error: 'User already exist'
+            });
+        } else if (user === 'failed password') {
+            res.render('signup.hbs', {
+                title: 'FrontRow - Sign Up',
+                error: "Passwords don't match"
+            });
+        } else if (user === 'empty') {
+            res.render('signup.hbs', {
+                title: 'FrontRow - Sign Up',
+                error: "All fields cannot be empty"
+            });
+        } else {
+            res.redirect('/');
+        }
+    })
 })
 
 app.post('/searchResults', (request, response) => {
@@ -87,10 +116,8 @@ app.post('/searchResults', (request, response) => {
 
 app.get('/logout', (req, res) => {
     req.session.reset();
-    res.render('home.hbs', {
-    	title: "FrontRow",
-    	login: false
-    });
+    userLogin = false;
+    res.redirect('/');
 });
 
 const port = process.env.PORT || 8080;
