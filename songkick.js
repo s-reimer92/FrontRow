@@ -23,10 +23,10 @@ const getNumPages = (cityID, callback) => {
 };
 
 //Parses through results to find any bands we like
-var parseResults = (cityID, numPages, favList, resultsList, callback) => {
+var parseResults = (cityID, numPages, favList, callback) => {
 	//currentRequests tracks the number of async requests currently being processed
 	var currentRequests = numPages;
-
+	var resultsList = []
 	//Iterates over every page of results from API
 	for (let i=1; i<numPages+1; i++) {
 		request({
@@ -59,14 +59,21 @@ var parseResults = (cityID, numPages, favList, resultsList, callback) => {
 	}
 }
 
-/* Test Function
+module.exports = {
+	getLocation,
+	getNumPages,
+	parseResults
+}
+// Test Function 
+/*
 var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
-list =[]
-
-
-parseResults(27398, 10, favouriteList, list, (results) => {
-	console.log(results);
+getLocation('burnaby', (results) => {
+	getNumPages(results, (results2) => {
+		parseResults(results, results2, favouriteList, (results3) => {
+			console.log(results3);
+		})
+	})
 })
-*/
 
+*/
 

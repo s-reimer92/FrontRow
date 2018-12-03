@@ -3,6 +3,6 @@
         "username": "shaun",
         "password": "student",
         "location": "Burnaby",
-        "artists": []
+        "artists": ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
     }
 ]

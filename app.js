@@ -4,11 +4,17 @@ const fs = require('fs');
 const lastfm = require('./lastfm.js');
 const session = require('client-sessions');
 const bodyParser = require('body-parser');
+const setlist = require('./setlist.js');
+const songkick = require('./songkick.js');
 
 var user = require('./user.js');
 // var connect = require('./connect.js');
 
 var app = express();
+
+//User Info
+var location = '';
+var favouriteList = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -24,9 +30,6 @@ app.use(bodyParser.urlencoded({
 
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
-
-//Holds value for search bar
-var currentSearch 
 
 // creates a session
 app.use(session({
@@ -58,6 +61,8 @@ app.post('/login', function(req, res) {
     		});
     	} else if (user.password === req.body.password) {
     		req.session.user = user
+    		location = user.location;
+    		favouriteList = user.artists
     		res.render('home.hbs', {
     			title: `FrontRow - ${user.username}`,
 				login: true
@@ -85,6 +90,18 @@ app.post('/searchResults', (request, response) => {
 	})
 })
 
+app.get('/upcoming', (request, response) => {
+	songkick.getLocation(location, (locationID) => {
+		songkick.getNumPages(locationID, (numPages) => {
+			songkick.parseResults(locationID, numPages, favouriteList, (results) => {
+				response.render('upcoming.hbs', {
+					concertResults: results
+				})
+			})
+		})
+	})
+})
+
 app.get('/logout', (req, res) => {
     req.session.reset();
     res.render('home.hbs', {
@@ -98,3 +115,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
 	console.log(`Server is up on the port ${8080}`);
 });
+

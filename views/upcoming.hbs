@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+	{{> header}}
+
+<body>
+	<div id = "body">
+		{{> banner}}
+		{{> menu}}
+		{{> searchResultsStyle}}
+		<div id = "searchResultsBox">
+			<div id = "searchResultsFrame">
+				{{#each concertResults}}
+					<p>{{this.displayName}}</p>
+					<p>{{this.venue.displayName}}</p>
+					<hr>
+				{{/each}}										
+			</div>
+			<div id = "searchResultsText">Upcoming Shows</div>
+		</div>
+	</div>
+</body>
+
+</html>
