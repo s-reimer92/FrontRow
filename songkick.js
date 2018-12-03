@@ -74,7 +74,7 @@ var returnConcerts = (favList, location) => {
 	getLocation(location, (locationID) => {
 		getNumPages(locationID, (numPages) => {
 			parseResults(locationID, numPages, favList, (results) => {
-				console.log(results);
+				return results;
 			})
 		})
 	})
