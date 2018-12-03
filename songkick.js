@@ -70,21 +70,21 @@ var parseResults = (cityID, numPages, favList, callback) => {
 	}
 }
 
-module.exports = {
-	getLocation,
-	getNumPages,
-	parseResults
-}
-// Test Function 
-
-var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
-getLocation('burnaby', (results) => {
-	getNumPages(results, (results2) => {
-		parseResults(results, results2, favouriteList, (results3) => {
-			console.log(results3);
+var returnConcerts = (favList, location) => {
+	getLocation(location, (locationID) => {
+		getNumPages(locationID, (numPages) => {
+			parseResults(locationID, numPages, favList, (results) => {
+				console.log(results);
+			})
 		})
 	})
-})
+}
 
-
-
+module.exports = {
+	returnConcerts
+}
+// Test Function 
+/*
+var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
+returnConcerts(favouriteList, 'Burnaby')
+*/
