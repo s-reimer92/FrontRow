@@ -107,10 +107,6 @@ app.get('/upcoming', (request, response) => {
 	})
 })
 
-app.post('/upcoming', (request, response) => {
-
-})
-
 app.get('/logout', (req, res) => {
     req.session.reset();
     res.render('home.hbs', {
