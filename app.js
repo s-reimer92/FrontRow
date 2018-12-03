@@ -83,6 +83,7 @@ app.get('/signup', (request, response) => {
 
 app.get('/favourites', (request, response) => {
 	response.render('favourites.hbs', {
+		title: 'FrontRow - Favourite Artists',
 		artists: favouriteList
 	})
 })
@@ -90,6 +91,7 @@ app.get('/favourites', (request, response) => {
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
 		response.render('searchResults.hbs', {
+			title: "FrontRow - Search Results",
 			artist: request.body.artist,
 			artistResults: result
 		});
@@ -99,13 +101,14 @@ app.post('/searchResults', (request, response) => {
 app.get('/upcoming', (request, response) => {
 	songkick.returnConcerts(favouriteList, location, (concerts) => {
 		response.render('upcoming.hbs', {
+			title: "FrontRow - Upcoming",
 			concertResults: concerts
 		})
 	})
 })
 
 app.post('/upcoming', (request, response) => {
-	
+
 })
 
 app.get('/logout', (req, res) => {
