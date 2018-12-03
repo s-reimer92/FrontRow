@@ -116,11 +116,15 @@ app.post('/signup', (req, res) => {
 
 
 app.get('/favourites', (request, response) => {
-	response.render('favourites.hbs', {
-		title: 'FrontRow - Favourite Artists',
-		artists: favouriteList,
-        login: userLogin
-	})
+    if (userLogin == false) {
+        response.redirect('/')
+    } else {
+            response.render('favourites.hbs', {
+            title: 'FrontRow - Favourite Artists',
+            artists: request.session.user.artists,
+            login: userLogin
+        })
+    }
 })
 
 app.post('/searchResults', (request, response) => {
@@ -135,13 +139,17 @@ app.post('/searchResults', (request, response) => {
 })
 
 app.get('/upcoming', (request, response) => {
-	songkick.returnConcerts(favouriteList, location, (concerts) => {
-		response.render('upcoming.hbs', {
-			title: "FrontRow - Upcoming",
-			concertResults: concerts,
-            login: userLogin
-		})
-	})
+    if (userLogin == false) {
+        response.redirect('/')
+    } else {
+    	songkick.returnConcerts(request.session.user.artists, request.session.user.location, (concerts) => {
+    		response.render('upcoming.hbs', {
+    			title: "FrontRow - Upcoming",
+    			concertResults: concerts,
+                login: userLogin
+    		})
+    	})
+    }
 })
 
 app.post('/upcoming', (request, response) => {
