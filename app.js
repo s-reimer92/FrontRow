@@ -97,15 +97,15 @@ app.post('/searchResults', (request, response) => {
 })
 
 app.get('/upcoming', (request, response) => {
-	songkick.getLocation(location, (locationID) => {
-		songkick.getNumPages(locationID, (numPages) => {
-			songkick.parseResults(locationID, numPages, favouriteList, (results) => {
-				response.render('upcoming.hbs', {
-					concertResults: results
-				})
-			})
+	songkick.returnConcerts(favouriteList, location, (concerts) => {
+		response.render('upcoming.hbs', {
+			concertResults: concerts
 		})
 	})
+})
+
+app.post('/upcoming', (request, response) => {
+	
 })
 
 app.get('/logout', (req, res) => {

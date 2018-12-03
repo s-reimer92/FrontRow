@@ -70,11 +70,11 @@ var parseResults = (cityID, numPages, favList, callback) => {
 	}
 }
 
-var returnConcerts = (favList, location) => {
+var returnConcerts = (favList, location, callback) => {
 	getLocation(location, (locationID) => {
 		getNumPages(locationID, (numPages) => {
 			parseResults(locationID, numPages, favList, (results) => {
-				return results;
+				callback(results);
 			})
 		})
 	})
@@ -86,5 +86,7 @@ module.exports = {
 // Test Function 
 /*
 var favouriteList = ["JMSN", "Metallica", "Ella Mai", "Musica Intima"]
-returnConcerts(favouriteList, 'Burnaby')
+returnConcerts(favouriteList, 'Burnaby', (results) => {
+	console.log(results);
+})
 */
