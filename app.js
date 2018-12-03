@@ -49,6 +49,7 @@ app.get('/', (request, response) => {
     } else {
         response.render('home.hbs', {
             title: 'FrontRow',
+            username: request.session.user.username,
             login: userLogin
         });
     }
