@@ -162,6 +162,18 @@ app.get('/upcoming', (request, response) => {
     }
 })
 
+// Settings page, under maintenance, and required login
+app.get('/settings', (request, response) => {
+    if (userLogin == false) {
+        response.redirect('/')
+    } else {
+        response.render('maintenance.hbs', {
+            title: "FrontRow - maintenance",
+            login: userLogin
+        });
+    }
+})
+
 app.post('/upcoming', (request, response) => {
 
 })
