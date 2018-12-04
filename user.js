@@ -1,21 +1,25 @@
+// Required fs module
 const fs = require('fs');
 
-function login(username, callback) {
+// Login function that passes User object or error message to callback
+function login(username, password, callback) {
 	var readUser = fs.readFileSync('users.json');
 	var usersList = JSON.parse(readUser);
 	for (var i = 0; i < usersList.length; i++) {
 		if (username == usersList[i].username) {
-			callback(usersList[i]);
+			if (password == usersList[i].password){
+				callback(usersList[i]);
+			} else {
+				callback('failed password')
+			}
+			
 		} else if (i == usersList.length - 1) {
-			callback('failed');
+			callback('failed username');
 		}
 	}
-	// systemObject.tickets.push(ticket);
-	// var resultingString = JSON.stringify(systemObject);
-	// fs.writeFileSync('a2.json', resultingString);
-	// console.log("ticket added!")
 }
 
+// Signup function that verifies signup information and write it to JSON file
 function signup(username, password, comPassword, location, callback) {
 	if (password != comPassword) {
 		callback('failed password');
@@ -44,6 +48,7 @@ function signup(username, password, comPassword, location, callback) {
 	}
 
 }
+
 
 module.exports = {
 	login,
