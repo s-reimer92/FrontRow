@@ -11,8 +11,11 @@
 		<div id = "searchResultsBox">
 			<div id = "searchResultsFrame">
 				{{#each artistResults}}
-					<p>{{this}}</p>
-					<button type="button">Add to Favourites</button>
+					
+					<form method="post" action="/addToFavourites">
+						<p name="nameOfArtist">{{this}}</p>
+						<button type="submit">Add to Favourites</button>
+					</form>
 					<hr>
 				{{/each}}										
 			</div>

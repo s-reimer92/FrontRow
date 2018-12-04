@@ -6,6 +6,7 @@ const session = require('client-sessions');
 const bodyParser = require('body-parser');
 const setlist = require('./setlist.js');
 const songkick = require('./songkick.js');
+const userData = require('./userData.js')
 
 var user = require('./user.js');
 // var connect = require('./connect.js');
@@ -126,6 +127,10 @@ app.get('/favourites', (request, response) => {
             login: userLogin
         })
     }
+})
+
+app.post('/addToFavourites', (request, response) => {
+    userData.addFavouriteArtists(request.body.nameOfArtist, request.session.user.username)
 })
 
 app.post('/searchResults', (request, response) => {
