@@ -126,6 +126,7 @@ app.get('/favourites', (request, response) => {
     }
 })
 
+// POST method for adding artists to a user's favourite artists in users.json
 app.post('/addToFavourites', (request, response) => {
     var artistName = userData.parseArtistName(request.body.favourite);
     userData.addFavouriteArtists(artistName, request.session.user.username, (user) => {
