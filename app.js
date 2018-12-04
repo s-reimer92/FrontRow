@@ -149,7 +149,7 @@ app.post('/searchResults', (request, response) => {
 })
 
 // upcoming show page, redirect to login page if not login
-app.get('/upcoming', async (request, response) => {
+app.get('/upcoming', (request, response) => {
     if (userLogin == false) {
         response.redirect('/')
     } else {
@@ -178,7 +178,6 @@ app.get('/upcoming', async (request, response) => {
     	})
     }
 })
-
 
 // Settings page, under maintenance, and required login
 app.get('/settings', (request, response) => {

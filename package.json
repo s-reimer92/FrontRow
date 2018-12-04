@@ -4,7 +4,8 @@
   "description": "ACIT 2520 Nifty Project",
   "main": "search.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Group 4",
   "license": "ISC",
