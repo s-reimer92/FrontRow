@@ -14,7 +14,7 @@ var getFavouriteArtists = (user) => {
 	// console.log(favouriteArtists[1])
 }
 
-var addFavouriteArtists = (artistName, user) => {
+var addFavouriteArtists = (artistName, user, callback) => {
 	var artist = artistName
 
 	var file = fs.readFileSync('users.json');
@@ -28,6 +28,15 @@ var addFavouriteArtists = (artistName, user) => {
 
 	var favouriteArtistsString = JSON.stringify(favouriteArtists);
 	fs.writeFileSync('users.json', favouriteArtistsString);
+
+	var file = fs.readFileSync('users.json');
+	var usersList = JSON.parse(file);
+
+	for (i=0; i < usersList.length; i++) {
+		if (usersList[i].username == user) {
+			callback(usersList[i])
+		}
+	}
 };
 
 var parseArtistName = (artistString) => {

@@ -29,8 +29,6 @@ app.use(express.static(__dirname + '/public'));
 // Keep track of user login status
 var userLogin = false;
 
-var searchResults = [];
-
 // Creates a session for user
 app.use(session({
     cookieName: 'session',
@@ -76,8 +74,8 @@ app.post('/login', (request, response) => {
                 error: 'Wrong password'
             });
     	} else {
-            request.session.user = user
-            userLogin = true
+            request.session.user = user;
+            userLogin = true;
             response.redirect('/');
     	}
     });
@@ -130,13 +128,16 @@ app.get('/favourites', (request, response) => {
 
 app.post('/addToFavourites', (request, response) => {
     var artistName = userData.parseArtistName(request.body.favourite);
-    userData.addFavouriteArtists(artistName, request.session.user.username)
+    userData.addFavouriteArtists(artistName, request.session.user.username, (user) => {
+        request.session.user = user;
+        response.redirect('/');
+    });
+
 })
 
 // POST method for searching artists
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
-        searchResults = result;
 		response.render('searchResults.hbs', {
 			title: "FrontRow - Search Results",
 			artist: request.body.artist,
