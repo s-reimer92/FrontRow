@@ -9,14 +9,14 @@
 		<div id = "signUpBox">
 			<form id='signUpForm' action="/signup" method="POST">
 				{{error}}
-				<input type="text", id = "loginEntry", placeholder="Username", onfocus="this.value='", class="loginField", name="username" />
-				<input type="password", id = "passwordEntry", placeholder="Password", onfocus="this.value='", class="loginField", name="password" />
-				<input type="password", id = "pwConfirmEntry", placeholder="Confirm Password", onfocus="this.value='", class="loginField", name="comPassword" />
-				<input type="text", id = "loginEntry", placeholder="Your location", onfocus="this.value='", class="loginField", name="location" />
-				<input type="submit", id = "signupButton", class="loginField" value="Sign Up">
+				<input type="text" id = "loginEntry" placeholder="Username" onfocus="this.value='" class="loginField" name="username" />
+				<input type="password" id = "passwordEntry" placeholder="Password" onfocus="this.value='" class="loginField" name="password" />
+				<input type="password" id = "pwConfirmEntry" placeholder="Confirm Password" onfocus="this.value='" class="loginField" name="comPassword" />
+				<input type="text" id = "loginEntry" placeholder="Your location" onfocus="this.value='" class="loginField" name="location" />
+				<input type="submit" id = "signupButton" class="loginField" value="Sign Up">
 			</form>
 			<form id='loginForm' action="/login" method="GET">
-				<input type="submit", id = "loginButton", class="loginField" value="Already a User? Log In">
+				<input type="submit" id = "loginButton" class="loginField" value="Already a User? Log In">
 			</form>
 				
 

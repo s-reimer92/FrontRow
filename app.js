@@ -27,7 +27,9 @@ app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
 // Keep track of user login status
-var userLogin = false
+var userLogin = false;
+
+var searchResults = [];
 
 // Creates a session for user
 app.use(session({
@@ -127,12 +129,14 @@ app.get('/favourites', (request, response) => {
 })
 
 app.post('/addToFavourites', (request, response) => {
-    userData.addFavouriteArtists(request.body.nameOfArtist, request.session.user.username)
+    var artistName = userData.parseArtistName(request.body.favourite);
+    userData.addFavouriteArtists(artistName, request.session.user.username)
 })
 
 // POST method for searching artists
 app.post('/searchResults', (request, response) => {
 	lastfm.getArtists(request.body.artist, (result) => {
+        searchResults = result;
 		response.render('searchResults.hbs', {
 			title: "FrontRow - Search Results",
 			artist: request.body.artist,
