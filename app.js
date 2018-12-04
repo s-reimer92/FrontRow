@@ -179,12 +179,28 @@ app.get('/upcoming', async (request, response) => {
     }
 })
 
+<<<<<<< HEAD
 var whatever = (concerts) => {
 	return new Promise((resolve, reject) => {
 		for (let i = 0; i<concerts.length; i++) {
     		setlist.returnSetlist(concerts[i].performance[0].displayName, (results) => {
     			concerts[i].setlist = results
     		})
+=======
+// Settings page, under maintenance, and required login
+app.get('/settings', (request, response) => {
+    if (userLogin == false) {
+        response.redirect('/')
+    } else {
+        response.render('maintenance.hbs', {
+            title: "FrontRow - maintenance",
+            login: userLogin
+        });
+    }
+})
+
+app.post('/upcoming', (request, response) => {
+>>>>>>> 316ea011a055705d903b53867eb968d2343a9ce3
 
     	}
     	while(typeof concerts[concerts.length-1].setlist === undefined) {
