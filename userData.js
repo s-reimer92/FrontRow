@@ -1,6 +1,8 @@
 const fs = require('fs');
 
 var getFavouriteArtists = (user) => {
+	// takes in a user and console logs the user's favourite artists
+	// Tests if users.json can be interacted with
 	var file = fs.readFileSync('users.json');
 
 	var favouriteArtists = JSON.parse(file);
@@ -11,10 +13,10 @@ var getFavouriteArtists = (user) => {
 		}
 	}
 
-	// console.log(favouriteArtists[1])
 }
 
 var addFavouriteArtists = (artistName, user, callback) => {
+	// adds an artist to a specific user's favourite artists in users.json
 	var artist = artistName
 
 	var file = fs.readFileSync('users.json');
@@ -40,6 +42,7 @@ var addFavouriteArtists = (artistName, user, callback) => {
 };
 
 var parseArtistName = (artistString) => {
+	// iterates through the value of the submit button and returns the artist name
 	var artistName = artistString
 	for (var i = 4; i < artistString.length+3; i++) {
         if(artistName[i] == ' ' && artistName[i+1] == 't' && artistName[i+2] == "o" && artistName[i+3] == " "){
