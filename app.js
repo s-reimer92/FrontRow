@@ -149,23 +149,50 @@ app.post('/searchResults', (request, response) => {
 })
 
 // upcoming show page, redirect to login page if not login
-app.get('/upcoming', (request, response) => {
+app.get('/upcoming', async (request, response) => {
     if (userLogin == false) {
         response.redirect('/')
     } else {
-    	songkick.returnConcerts(request.session.user.artists, request.session.user.location, (concerts) => {
-    		response.render('upcoming.hbs', {
-    			title: "FrontRow - Upcoming",
-    			concertResults: concerts,
-                login: userLogin
-    		})
+    	songkick.returnConcerts(request.session.user.artists, request.session.user.location, async (concerts) => {
+    		for (let i = 0; i<concerts.length; i++) {
+	    		setlist.returnSetlist(concerts[i].performance[0].displayName, (results) => {
+	    			concerts[i].setlist = results
+	    			if (i==concerts.length-1) {
+	    				let timer = setInterval(function(){
+	    								if (concerts[concerts.length-1].hasOwnProperty("setlist")) {
+	    									clearTimeout(timer);
+	    									response.render('upcoming.hbs', {
+												title: "FrontRow - Upcoming",
+												concertResults: concerts,
+								            	login: userLogin
+											});
+	    								}
+	    							}, 1);
+	    			}
+	    		})
+
+	    	}
+    		
+			
+    			
     	})
     }
 })
 
-app.post('/upcoming', (request, response) => {
+var whatever = (concerts) => {
+	return new Promise((resolve, reject) => {
+		for (let i = 0; i<concerts.length; i++) {
+    		setlist.returnSetlist(concerts[i].performance[0].displayName, (results) => {
+    			concerts[i].setlist = results
+    		})
 
-})
+    	}
+    	while(typeof concerts[concerts.length-1].setlist === undefined) {
+    	}
+    	console.log(concerts);
+    	resolve(concerts)
+	})
+}
 
 // GET method for log out, end current session and redirect to homepage
 app.get('/logout', (request, response) => {

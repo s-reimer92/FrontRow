@@ -52,7 +52,12 @@ var analyzeSetlist = (songArray) => {
 	topSongs.sort(function(first, second) {
   		return second[1] - first[1];
 	});
-	return topSongs.slice(0, 10);
+	topSongs = topSongs.slice(0, 10);
+	finalArr = []
+	for (i=0; i<10; i++) {
+		finalArr.push(topSongs[i][0])
+	}
+	return finalArr
 }
 
 var returnSetlist = (artist, callback) => {
@@ -73,26 +78,17 @@ var returnSetlist = (artist, callback) => {
 	})
 }
 
-var returnAllSetlists = (artistArray, callback) => {
-	setlistList =[]
-	let uniqueArr = Array.from(new Set(artistArray))
-    for(let i=0; i<uniqueArr.length; i++) {
-    	returnSetlist(uniqueArr[i], (results) => {
-    		setlistList.push(results)
-    	})
-    }
-    callback(setlistList)
-}
-
 module.exports = {
 	returnSetlist
 
 }
 //Test Function
+/*
+list = ["Elton John", "Metallica", "Bon Iver", "July Talk", "Hippo Campus", "Arkells"]
+resultsList = []
 
-var list = ["Elton John", "Metallica", "Bon Iver"]
 
-returnAllSetlists(list, (results) => {
+returnSetlist("Elton John", (results) => {
 	console.log(results);
 })
-
+*/
