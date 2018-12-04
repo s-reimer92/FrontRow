@@ -180,12 +180,6 @@ app.get('/upcoming', async (request, response) => {
 })
 
 
-var whatever = (concerts) => {
-	return new Promise((resolve, reject) => {
-		for (let i = 0; i<concerts.length; i++) {
-    		setlist.returnSetlist(concerts[i].performance[0].displayName, (results) => {
-    			concerts[i].setlist = results
-    		})
 // Settings page, under maintenance, and required login
 app.get('/settings', (request, response) => {
     if (userLogin == false) {
